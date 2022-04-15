@@ -96,7 +96,7 @@ h1 {
 }
 
 .settings-bar {
-    width: 0;
+    width: 200px;
     height: 90vh;
     position: absolute;
     z-index: 1;
@@ -107,35 +107,41 @@ h1 {
     transition: .5s;
     background-color:white;
     border-right: 1px solid rgba(128, 128, 128, 0.411);
-
+    left: -200px;
 }
 
 .settings-bar:hover {
-    width: 200px
+    left: 0;
 
 }
 
 .settings-bar:hover .arrow {
     transform: rotate(180deg);
+    color: var(--second-color);
+
 }
 
 
 .pull-container {
-    width: 56px;
+    width: 90px;
     height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    right: -56px;
+    background: linear-gradient(90deg,white, rgba(255, 255, 255, 0));
+    right: -90px;
+}
+
+.settings-bar:hover .pull-container {
 }
 
 .arrow-container {
-    background-color: white;
+    /* background-color: white;
     border-radius: 0 5px 5px 0;
     border-right: 1px solid rgba(128, 128, 128, 0.411);
     border-top: 1px solid rgba(128, 128, 128, 0.411);
-    border-bottom: 1px solid rgba(128, 128, 128, 0.411);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.411); */
 
 
 }
@@ -148,6 +154,7 @@ h1 {
     justify-content: center;
     align-items: center;
     transition: .3s;
+    color: var(--first-color);
 }
 
 @media screen and (max-width: 1080px) {

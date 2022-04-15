@@ -24,7 +24,7 @@ window.onload = () => {
             duration: 1,
         })
         timeline.to('.half', {
-            delay: 1.5,
+            delay: 0,
             height: '5vh',
             duration: .5,
         }).then(() => {
@@ -32,7 +32,7 @@ window.onload = () => {
 
         })
         gui.reset()
-    }, 7000)
+    }, 1)
 }
 
 // window.onload = () => {
