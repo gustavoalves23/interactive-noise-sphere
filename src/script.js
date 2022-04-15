@@ -7,7 +7,14 @@ import VertexShader from './Shaders/Vertex.glsl'
 import gsap from 'gsap'
 
 
-const topHalf = document.getElementById('top')
+/**
+ * Base
+ */
+// Debug
+
+const gui = new dat.GUI()
+gui.close()
+gui.domElement.style.display = 'none'
 
 window.onload = () => {
     setTimeout(() => {
@@ -17,10 +24,14 @@ window.onload = () => {
             duration: 1,
         })
         timeline.to('.half', {
-            delay: 2,
+            delay: 1.5,
             height: '5vh',
             duration: .5,
+        }).then(() => {
+        gui.domElement.style.display = 'block'
+
         })
+        gui.reset()
     }, 7000)
 }
 
@@ -40,13 +51,7 @@ window.onload = () => {
 // }
 
 
-/**
- * Base
- */
-// Debug
-const gui = new dat.GUI()
 
-gui.close()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
