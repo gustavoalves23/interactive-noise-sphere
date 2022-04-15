@@ -4,12 +4,49 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 import FramentShader from './Shaders/Fragment.glsl'
 import VertexShader from './Shaders/Vertex.glsl'
+import gsap from 'gsap'
+
+
+const topHalf = document.getElementById('top')
+
+window.onload = () => {
+    setTimeout(() => {
+        const timeline = gsap.timeline() 
+        timeline.to('.bar', {
+            width: '100vw',
+            duration: 1,
+        })
+        timeline.to('.half', {
+            delay: 2,
+            height: '5vh',
+            duration: .5,
+        })
+    }, 7000)
+}
+
+// window.onload = () => {
+//     setTimeout(() => {
+//         const timeline = gsap.timeline() 
+//         timeline.to('.bar', {
+//             width: '100vw',
+//             duration: 1,
+//         })
+//         timeline.to('.half', {
+//             delay: 2,
+//             height: '5vh',
+//             duration: 0.5,
+//         })
+//     }, 8000)
+// }
+
 
 /**
  * Base
  */
 // Debug
 const gui = new dat.GUI()
+
+gui.close()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -33,7 +70,10 @@ const mouse = {
 // Geometry
 const geometry = new THREE.SphereGeometry(1, 512, 512)
 
-console.log(geometry.attributes);
+const colors = {
+    firstColor: 0x8960fb,
+    secondColor: 0xdc9f98,
+}
 
 // Material
 const material = new THREE.ShaderMaterial({
@@ -63,10 +103,10 @@ const material = new THREE.ShaderMaterial({
             value: 0.5
         },
         uBaseColor: {
-            value: new THREE.Color(0x8960fb)
+            value: new THREE.Color(colors.firstColor)
         },
         uMouseColor: {
-            value: new THREE.Color(0xdc9f98)
+            value: new THREE.Color(colors.secondColor)
         }
     }
 })
@@ -78,6 +118,7 @@ gui.add(material.uniforms.uMouseStrength, 'value', 0.0, 1.5).name('Mouse Strengt
 gui.add(material.uniforms.uMouseArea, 'value', 0.3, 1.0).name('Mouse Area')
 gui.addColor(material.uniforms.uBaseColor, 'value').name('Base Color')
 gui.addColor(material.uniforms.uMouseColor, 'value').name('Mouse Color')
+
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material)
