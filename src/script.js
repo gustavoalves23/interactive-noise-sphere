@@ -53,7 +53,7 @@ window.onload = () => {
         })
         timeline.to('.half', {
             delay: 1.5,
-            height: '5vh',
+            height: '60px',
             duration: .5,
         })
     }, 6000)
