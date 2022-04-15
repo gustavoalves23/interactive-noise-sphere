@@ -36,6 +36,10 @@ body
     margin: 0;
 }
 
+.hello-text {
+    opacity: 0;
+}
+
 
 h1 {
     background-clip: border-box;
@@ -133,18 +137,6 @@ h1 {
     right: -90px;
 }
 
-.settings-bar:hover .pull-container {
-}
-
-.arrow-container {
-    /* background-color: white;
-    border-radius: 0 5px 5px 0;
-    border-right: 1px solid rgba(128, 128, 128, 0.411);
-    border-top: 1px solid rgba(128, 128, 128, 0.411);
-    border-bottom: 1px solid rgba(128, 128, 128, 0.411); */
-
-
-}
 
 .arrow {
     font-size: 2rem;
@@ -175,29 +167,95 @@ h1 {
 }
 
 .attribute {
+    background-clip: border-box;
     font-family: 'Satisfy', cursive;
     white-space: nowrap;
     font-size: 1.5rem;
     text-align: center;
     width: 200px;
+    background: linear-gradient(-45deg, var(--first-color), var(--second-color), var(--first-color));
+    background-size: 40% 80%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
 }
 
 .element {
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-basis: 1px;
+    flex-grow: 1;
+    justify-content: center;
 }
 
-#base-color-picker {
+.color-picker {
+    width: 110%;
+    height: 80px;
+    position: absolute;
+}
+
+.color-picker-container {
     width: 60%;
     height: 40px;
-    border: none;
-    border-radius: 100px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.color-picker:hover{
+    cursor: pointer;
+
 }
 
 .form-range {
-    width: 70% !important;
+
+    -webkit-appearance: none;
+    padding-top: 1vh;
+
 }
+.form-range:focus {
+    outline: none;
+  }
+
+  .form-range::-webkit-slider-runnable-track {
+    width: 70%;
+    height: 10px;
+    cursor: pointer;
+    background-color: var(--first-color);
+    border-radius: 25px;
+    border: 1px solid #8a8a8ab4;
+  }
+
+  .form-range::-webkit-slider-thumb {
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background: var(--second-color);
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -7px;
+  }
+
+
+  #reset-button {
+    background: linear-gradient(-45deg, var(--first-color), var(--second-color), var(--first-color));
+    padding: 10px;
+    height: 40px;
+    width: 60%;
+    border: none;
+    border-radius: 20px ;
+    color: white;
+    font-family: 'Satisfy', cursive;
+    font-size: 1rem;
+  }
+
+  #reset-button:hover {
+      cursor: pointer;
+  }
 
 @keyframes gradient {
     0% {

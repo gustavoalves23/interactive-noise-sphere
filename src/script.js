@@ -1,7 +1,6 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'lil-gui'
 import FramentShader from './Shaders/Fragment.glsl'
 import VertexShader from './Shaders/Vertex.glsl'
 import gsap from 'gsap'
@@ -12,11 +11,41 @@ import gsap from 'gsap'
  */
 // Debug
 
-const gui = new dat.GUI()
-gui.close()
-gui.domElement.style.display = 'none'
+const root = document.documentElement
+
+let localContent = null;
+
+
+const applySettings = (localContent) => {
+    firstColorInput.value = localContent.firstColor
+    secondColorInput.value = localContent.secondColor
+    uTimeMultiplierInput.value = localContent.timeMultiplier
+    uPerlinFrequencyInput.value = localContent.perlinFrequency
+    uPerlinAmplitudeInput.value = localContent.perlinAmplitude
+    uMouseStrengthInput.value = localContent.mouseStrength
+    uMouseAreaInput.value = localContent.mouseArea
+
+    material.uniforms.uTimeMultiplier.value = localContent.timeMultiplier
+    material.uniforms.uPerlinFrequency.value = localContent.perlinFrequency
+    material.uniforms.uPerlinAmplitude.value = localContent.perlinAmplitude
+    material.uniforms.uMouseStrength.value = localContent.mouseStrength
+    material.uniforms.uMouseArea.value = localContent.mouseArea
+    material.uniforms.uBaseColor.value = new THREE.Color(localContent.firstColor)
+    material.uniforms.uMouseColor.value = new THREE.Color(localContent.secondColor)
+
+
+    root.style.setProperty('--first-color', localContent.firstColor)
+    root.style.setProperty('--second-color', localContent.secondColor)
+}
+
+
 
 window.onload = () => {
+    localStorage.getItem('content') && applySettings(JSON.parse(localStorage.getItem('content')))
+    
+    document.getElementsByClassName('hello-text')[0].style.opacity = '1'
+    document.getElementsByClassName('hello-text')[1].style.opacity = '1'
+
     setTimeout(() => {
         const timeline = gsap.timeline() 
         timeline.to('.bar', {
@@ -24,16 +53,14 @@ window.onload = () => {
             duration: 1,
         })
         timeline.to('.half', {
-            delay: 0,
+            delay: 1.5,
             height: '5vh',
             duration: .5,
-        }).then(() => {
-        gui.domElement.style.display = 'block'
-
         })
-        gui.reset()
-    }, 1)
+    }, 6000)
 }
+
+
 
 // window.onload = () => {
 //     setTimeout(() => {
@@ -75,10 +102,8 @@ const mouse = {
 // Geometry
 const geometry = new THREE.SphereGeometry(1, 512, 512)
 
-const colors = {
-    firstColor: 0x8960fb,
-    secondColor: 0xdc9f98,
-}
+console.log(localContent);
+
 
 // Material
 const material = new THREE.ShaderMaterial({
@@ -90,7 +115,7 @@ const material = new THREE.ShaderMaterial({
             value: mouse
         },
         uTime: {
-            value: 0.0
+            value: 0
         },
         uTimeMultiplier: {
             value: 1.0
@@ -102,27 +127,91 @@ const material = new THREE.ShaderMaterial({
             value: 0.5
         },
         uMouseStrength: {
-            value: 0.5
+            value:  0.5
         },
         uMouseArea: {
             value: 0.5
         },
         uBaseColor: {
-            value: new THREE.Color(colors.firstColor)
+            value: new THREE.Color('#8960fb')
         },
         uMouseColor: {
-            value: new THREE.Color(colors.secondColor)
+            value: new THREE.Color('#dc9f98')
         }
     }
 })
 
-gui.add(material.uniforms.uTimeMultiplier, 'value', 0.0, 10.0).name('Time Multiplier');
-gui.add(material.uniforms.uPerlinFrequency, 'value', 0.0, 10.0).name('Perlin Frequency')
-gui.add(material.uniforms.uPerlinAmplitude, 'value', 0.0, 2.0).name('Perlin Amplitude')
-gui.add(material.uniforms.uMouseStrength, 'value', 0.0, 1.5).name('Mouse Strength')
-gui.add(material.uniforms.uMouseArea, 'value', 0.3, 1.0).name('Mouse Area')
-gui.addColor(material.uniforms.uBaseColor, 'value').name('Base Color')
-gui.addColor(material.uniforms.uMouseColor, 'value').name('Mouse Color')
+const firstColorInput = document.querySelector('input[name="first-color"]')
+const secondColorInput = document.querySelector('input[name="second-color"]')
+const uTimeMultiplierInput = document.querySelector('input[name="time-multiplier"]')
+const uPerlinFrequencyInput = document.querySelector('input[name="perlin-frequency"]')
+const uPerlinAmplitudeInput = document.querySelector('input[name="perlin-amplitude"]')
+const uMouseStrengthInput = document.querySelector('input[name="mouse-strength"]')
+const uMouseAreaInput = document.querySelector('input[name="mouse-area"]')
+const resetButton = document.querySelector('button[name="reset"]')
+
+
+const saveOnLocalStorage = () => {
+    localStorage.setItem('content', JSON.stringify({
+        firstColor: firstColorInput.value,
+        secondColor: secondColorInput.value,
+        timeMultiplier: uTimeMultiplierInput.value,
+        perlinFrequency: uPerlinFrequencyInput.value,
+        perlinAmplitude: uPerlinAmplitudeInput.value,
+        mouseStrength: uMouseStrengthInput.value,
+        mouseArea: uMouseAreaInput.value,
+    }))
+}
+
+firstColorInput.addEventListener('input', (e) => {
+    material.uniforms.uBaseColor.value = new THREE.Color(e.target.value)
+    root.style.setProperty('--first-color', e.target.value)
+    saveOnLocalStorage()
+})
+
+secondColorInput.addEventListener('input', (e) => {
+    material.uniforms.uMouseColor.value = new THREE.Color(e.target.value)
+    root.style.setProperty('--second-color', e.target.value)
+    saveOnLocalStorage()
+
+})
+
+uTimeMultiplierInput.addEventListener('input', (e) => {
+    material.uniforms.uTimeMultiplier.value = e.target.value
+    saveOnLocalStorage()
+
+})
+
+uPerlinFrequencyInput.addEventListener('input', (e) => {
+    material.uniforms.uPerlinFrequency.value = e.target.value
+    saveOnLocalStorage()
+
+})
+
+uPerlinAmplitudeInput.addEventListener('input', (e) => {
+    material.uniforms.uPerlinAmplitude.value = e.target.value
+    saveOnLocalStorage()
+
+})
+
+uMouseStrengthInput.addEventListener('input', (e) => {
+    material.uniforms.uMouseStrength.value = e.target.value
+    saveOnLocalStorage()
+
+})
+
+uMouseAreaInput.addEventListener('input', (e) => {
+    material.uniforms.uMouseArea.value = e.target.value
+    saveOnLocalStorage()
+
+})
+
+resetButton.addEventListener('click', () => {
+    localStorage.removeItem('content')
+    location.reload()
+})
+
+
 
 
 // Mesh
@@ -142,7 +231,6 @@ const sizes = {
 window.addEventListener('mousemove', event => {
     mouse.x = (event.clientX / sizes.width) * 2 - 1
     mouse.y = - (event.clientY / sizes.height) * 2 + 1
-    console.log(mouse);
 })
 
 window.addEventListener('resize', () =>
@@ -181,11 +269,6 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setClearColor(new THREE.Color(0xe8e8e8))
-
-gui.addColor({bgColor:0xe8e8e8}, 'bgColor').onChange(color => {
-    renderer.setClearColor(new THREE.Color(color))
-
-})
 
 /**
  * Animate
