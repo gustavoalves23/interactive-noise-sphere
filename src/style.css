@@ -60,7 +60,7 @@ h1 {
 .bar {
     position: absolute;
     z-index: 2;
-    height: 150px;
+    height: 5vh;
     background: linear-gradient(-45deg, var(--first-color), var(--second-color), var(--first-color));
     background-size: 400% 400%;
 
@@ -76,7 +76,6 @@ h1 {
 }
 
 #top .bar {
-    bottom: 0;
     right: 0;
     animation: gradient 20s ease infinite;
 }
@@ -92,6 +91,8 @@ h1 {
 
 #bottom .bar {
     animation: gradient 20s ease infinite reverse;
+    bottom: 0;
+
 }
 
 .settings-bar {
